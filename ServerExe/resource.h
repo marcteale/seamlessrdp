@@ -1,25 +1,12 @@
-/* -*- c-basic-offset: 8 -*-
-   rdesktop: A Remote Desktop Protocol client.
-   Seamless windows - Resource definition
-
-   Based on code copyright (C) 2004-2005 Martin Wickett
-
-   Copyright 2005-2006 Peter Åstrand <astrand@cendio.se> for Cendio AB
-   Copyright 2006 Pierre Ossman <ossman@cendio.se> for Cendio AB
-
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+//*********************************************************************************
+//
+//Title: Terminal Services Window Clipper
+//
+//Author: Martin Wickett
+//
+//Date: 2004
+//
+//*********************************************************************************
 
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
@@ -35,7 +22,7 @@
 #define ID_WMEXEC                       50000
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
