@@ -1,5 +1,5 @@
 #include <string.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 /* #define NDEBUG */
 #include <assert.h>
 
@@ -15,7 +15,7 @@
 */
 
 /* HW: HenkJan Wolthuis, 1997, public domain
- 
+
       changed functionnames, all public functions now have a 'hash_' prefix
       minor editing, marked 'm all(?) with a description
       removed a bug in hash_del and one in hash_enumerate
@@ -37,7 +37,7 @@
       key so hash_lookup finds the last one inserted first (LIFO)
       when not defined, hash_insert swaps the datapointers, returning a
       pointer to the old data
-*/ 
+*/
 /* #define DUPLICATE_KEYS */
 
 /*
@@ -52,26 +52,26 @@ static hash_table *the_table = NULL;
 ** for the correct number of pointers and sets them to NULL.  If it
 ** can't allocate sufficient memory, signals error by setting the size
 ** of the table to 0.
-*/ 
+*/
 /*HW: changed, now returns NULL on malloc-failure */
 hash_table *hash_construct_table( hash_table * table, size_t size )
 {
     size_t i;
     bucket **temp;
-    
+
     table->size = size;
     table->count = 0;
     table->table = ( bucket ** ) malloc( sizeof( bucket * ) * size );
     temp = table->table;
-    
+
     if ( NULL == temp ) {
         table->size = 0;
         return NULL;            /*HW: was 'table' */
     }
-    
+
     for ( i = 0; i < size; i++ )
         temp[ i ] = NULL;
-        
+
     return table;
 }
 
@@ -86,7 +86,7 @@ static unsigned short hash( char *string )
 {
     unsigned short ret_val = 0;
     int i;
-    
+
     while ( *string ) {
         /*
          ** RBS: Added conditional to account for strings in which the
@@ -100,7 +100,7 @@ static unsigned short hash( char *string )
          ** 4-byte boundries when it tries to work with a pointer to a
          ** 2-byte unsigned short.
          */
-        
+
         if ( strlen( string ) >= sizeof( unsigned short ) )
             i = *( unsigned short * ) string;
         else
@@ -116,26 +116,26 @@ static unsigned short hash( char *string )
 ** Insert 'key' into hash table.
 ** Returns pointer to old data associated with the key, if any, or
 ** NULL if the key wasn't in the table previously.
-*/ 
+*/
 /* HW: returns NULL if malloc failed */
 void *hash_insert( char *key, void *data, hash_table * table )
 {
     unsigned short val = hash( key ) % table->size;
     bucket *ptr;
-    
+
     assert( NULL != key );
-    
+
     /*
      ** NULL means this bucket hasn't been used yet.  We'll simply
      ** allocate space for our new bucket and put our data there, with
      ** the table pointing at it.
      */
-    
+
     if ( NULL == ( table->table ) [ val ] ) {
         ( table->table ) [ val ] = ( bucket * ) malloc( sizeof( bucket ) );
         if ( NULL == ( table->table ) [ val ] )
             return NULL;
-            
+
         if ( NULL ==
                 ( ( table->table ) [ val ] ->key = ( char * ) malloc( strlen( key ) + 1 ) ) ) {
             free( ( table->table ) [ val ] );
@@ -148,7 +148,7 @@ void *hash_insert( char *key, void *data, hash_table * table )
         table->count++;         /* HW */
         return ( table->table ) [ val ] ->data;
     }
-    
+
     /* HW: added a #define so the hashtable can accept duplicate keys */
 #ifndef DUPLICATE_KEYS
     /*
@@ -158,7 +158,7 @@ void *hash_insert( char *key, void *data, hash_table * table )
     for ( ptr = ( table->table ) [ val ]; NULL != ptr; ptr = ptr->next )
         if ( 0 == strcmp( key, ptr->key ) ) {
             void * old_data;
-            
+
             old_data = ptr->data;
             ptr->data = data;
             return old_data;
@@ -172,11 +172,11 @@ void *hash_insert( char *key, void *data, hash_table * table )
      ** take place as soon as it was determined that the present key in the
      ** list was larger than this one.
      */
-    
+
     ptr = ( bucket * ) malloc( sizeof( bucket ) );
     if ( NULL == ptr )
         return NULL;            /*HW: was 0 */
-        
+
     if ( NULL == ( ptr->key = ( char * ) malloc( strlen( key ) + 1 ) ) ) {
         free( ptr );
         return NULL;
@@ -186,7 +186,7 @@ void *hash_insert( char *key, void *data, hash_table * table )
     ptr->next = ( table->table ) [ val ];
     ( table->table ) [ val ] = ptr;
     table->count++;             /* HW */
-    
+
     return data;
 }
 
@@ -199,17 +199,17 @@ void *hash_lookup( char *key, hash_table * table )
 {
     unsigned short val = hash( key ) % table->size;
     bucket *ptr;
-    
+
     assert( NULL != key );
-    
+
     if ( NULL == ( table->table ) [ val ] )
         return NULL;
-        
+
     for ( ptr = ( table->table ) [ val ]; NULL != ptr; ptr = ptr->next ) {
         if ( 0 == strcmp( key, ptr->key ) )
             return ptr->data;
     }
-    
+
     return NULL;
 }
 
@@ -223,12 +223,12 @@ void *hash_del( char *key, hash_table * table )
     unsigned short val = hash( key ) % table->size;
     void *data;
     bucket *ptr, *last = NULL;
-    
+
     assert( NULL != key );
-    
+
     if ( NULL == ( table->table ) [ val ] )
         return NULL;            /* HW: was 'return 0' */
-        
+
     /*
      ** Traverse the list, keeping track of the previous node in the list.
      ** When we find the node to delete, we set the previous node's next
@@ -247,7 +247,7 @@ void *hash_del( char *key, hash_table * table )
                 table->count--; /* HW */
                 return data;
             }
-            
+
             /* If 'last' still equals NULL, it means that we need to
              ** delete the first node in the list. This simply consists
              ** of putting our own 'next' pointer in the array holding
@@ -265,12 +265,12 @@ void *hash_del( char *key, hash_table * table )
             }
         }
     }
-    
+
     /*
      ** If we get here, it means we didn't find the item in the table.
      ** Signal this by returning NULL.
      */
-    
+
     return NULL;
 }
 
@@ -285,9 +285,9 @@ void *hash_del( char *key, hash_table * table )
 static void free_node( char *key, void *data )
 {
     ( void ) data;
-    
+
     assert( NULL != key );
-    
+
     if ( NULL != function ) {
         function( hash_del( key, the_table ) );
     } else
@@ -306,13 +306,13 @@ void hash_free_table( hash_table * table, void ( *func ) ( void * ) )
 {
     function = func;
     the_table = table;
-    
+
     hash_enumerate( table, free_node );
     free( table->table );
     table->table = NULL;
     table->size = 0;
     table->count = 0;           /* HW */
-    
+
     the_table = NULL;
     function = NULL;
 }
@@ -327,7 +327,7 @@ void hash_enumerate( hash_table * table, void ( *func ) ( char *, void * ) )
     unsigned i;
     bucket *temp;
     bucket *swap;
-    
+
     for ( i = 0; i < table->size; i++ ) {
         if ( NULL != ( table->table ) [ i ] ) {
             /* HW: changed this loop */
@@ -343,7 +343,7 @@ void hash_enumerate( hash_table * table, void ( *func ) ( char *, void * ) )
 }
 
 /*      HW: added hash_sorted_enum()
- 
+
       hash_sorted_enum is like hash_enumerate but gives
       sorted output. This is much slower than hash_enumerate, but
       sometimes nice for printing to a file...
@@ -382,33 +382,33 @@ static int key_comp( const void *a, const void *b )
 int hash_sorted_enum( hash_table * table, void ( *func ) ( char *, void * ) )
 {
     int i;
-    
+
     /* nothing to do ! */
     if ( NULL == table || 0 == table->count || NULL == func )
         return 0;
-        
+
     /* malloc an pointerarray for all hashkey's and datapointers */
     if ( NULL ==
             ( sortmap =
                   ( sort_struct * ) malloc( sizeof( sort_struct ) * table->count ) ) )
         return 0;
-        
+
     /* copy the pointers to the hashkey's */
     counter = 0;
     hash_enumerate( table, key_get );
-    
+
     /* sort the pointers to the keys */
     qsort( sortmap, table->count, sizeof( sort_struct ), key_comp );
-    
+
     /* call the function for each node */
     for ( i = 0; i < abs( ( table->count ) ); i++ ) {
         func( sortmap[ i ].key, sortmap[ i ].data );
     }
-    
+
     /* free the pointerarray */
     free( sortmap );
     sortmap = NULL;
-    
+
     return 1;
 }
 
@@ -416,7 +416,7 @@ int hash_sorted_enum( hash_table * table, void ( *func ) ( char *, void * ) )
 #define TEST
 #ifdef TEST
 
-#include <stdio.h> 
+#include <stdio.h>
 //#include "snip_str.h" /* for strdup() */
 
 FILE *o;
@@ -443,7 +443,7 @@ void strfree( void *d )
 int main( void )
 {
     hash_table table;
-    
+
     char *strings[] = {
                           "The first string",
                           "The second string",
@@ -453,7 +453,7 @@ int main( void )
                           "The last string",
                           NULL
                       };
-                      
+
     char *junk[] = {
                        "The first data",
                        "The second data",
@@ -462,17 +462,17 @@ int main( void )
                        "The fifth datum",
                        "The sixth piece of data"
                    };
-                   
+
     int i;
     void *j;
-    
+
     hash_construct_table( &table, 211 );
-    
+
     /* I know, no checking on strdup ;-)), but using strdup
        to demonstrate hash_table_free with a functionpointer */
     for ( i = 0; NULL != strings[ i ]; i++ )
         hash_insert( strings[ i ], strdup( junk[ i ] ), &table );
-        
+
     /* enumerating to a file */
     if ( NULL != ( o = fopen( "HASH.HSH", "wb" ) ) ) {
         fprintf( o, "%d strings in the table:\n\n", table.count );
@@ -481,18 +481,18 @@ int main( void )
         hash_sorted_enum( &table, fprinter );
         fclose( o );
     }
-    
+
     /* enumerating to screen */
     hash_sorted_enum( &table, printer );
     printf( "\n" );
-    
+
     /* delete 3 strings, should be 3 left */
     for ( i = 0; i < 3; i++ ) {
         /* hash_del returns a pointer to the data */
         strfree( hash_del( strings[ i ], &table ) );
     }
     hash_enumerate( &table, printer );
-    
+
     for ( i = 0; NULL != strings[ i ]; i++ ) {
         j = hash_lookup( strings[ i ], &table );
         if ( NULL == j )
@@ -500,9 +500,9 @@ int main( void )
         else
             printf( "\n%s is still in the table.", strings[ i ] );
     }
-    
+
     hash_free_table( &table, strfree );
-    
+
     return 0;
 }
 #endif /* TEST */
