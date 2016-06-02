@@ -4,11 +4,13 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TSWinSender", "ServerExe\clipper.vcxproj", "{4C27EA74-3453-4222-BDD2-37C3B90438D2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hookdll", "ServerExe\hookdll\hookDll.vcxproj", "{8B343CDF-D7F6-480A-83B8-7F534675FFE6}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "seamlessrdp", "ClientDLL\TSWindowClipper.vcxproj", "{7A2CB0E6-2796-4AAB-8D94-EE8EA3AFCEFB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{58C9ED1C-417D-49A4-8D1B-AC3E6CFFFBEE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{054C5DC6-C609-4601-8D58-85F58E12F452}"
 	ProjectSection(SolutionItems) = preProject
-		notes.txt = notes.txt
+		    notes.txt =     notes.txt
 	EndProjectSection
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{4C27EA74-3453-4222-BDD2-37C3B90438D2}.Debug|x86.Build.0 = Debug|Win32
 		{4C27EA74-3453-4222-BDD2-37C3B90438D2}.Release|x86.ActiveCfg = Release|Win32
 		{4C27EA74-3453-4222-BDD2-37C3B90438D2}.Release|x86.Build.0 = Release|Win32
+		{8B343CDF-D7F6-480A-83B8-7F534675FFE6}.Debug|x86.ActiveCfg = Debug|Win32
+		{8B343CDF-D7F6-480A-83B8-7F534675FFE6}.Debug|x86.Build.0 = Debug|Win32
+		{8B343CDF-D7F6-480A-83B8-7F534675FFE6}.Release|x86.ActiveCfg = Release|Win32
+		{8B343CDF-D7F6-480A-83B8-7F534675FFE6}.Release|x86.Build.0 = Release|Win32
 		{7A2CB0E6-2796-4AAB-8D94-EE8EA3AFCEFB}.Debug|x86.ActiveCfg = Debug|Win32
 		{7A2CB0E6-2796-4AAB-8D94-EE8EA3AFCEFB}.Debug|x86.Build.0 = Debug|Win32
 		{7A2CB0E6-2796-4AAB-8D94-EE8EA3AFCEFB}.Release|x86.ActiveCfg = Release|Win32
