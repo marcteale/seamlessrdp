@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="ClientDLL"
+	Name="seamlessrdp"
 	ProjectGUID="{7A2CB0E6-2796-4AAB-8D94-EE8EA3AFCEFB}"
 	Keyword="Win32Proj">
 	<Platforms>
