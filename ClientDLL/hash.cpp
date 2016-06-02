@@ -401,7 +401,7 @@ int hash_sorted_enum( hash_table * table, void ( *func ) ( char *, void * ) )
     qsort( sortmap, table->count, sizeof( sort_struct ), key_comp );
 
     /* call the function for each node */
-    for ( i = 0; i < abs( ( table->count ) ); i++ ) {
+    for ( i = 0; i < abs( int ( table->count ) ); i++ ) {
         func( sortmap[ i ].key, sortmap[ i ].data );
     }
 
